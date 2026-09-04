@@ -1,14 +1,13 @@
 * {
-    margin: 0 !important;
-    padding: 0 !important;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-html {
+html,
+body {
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
     background: #000;
     overflow: hidden;
 }
@@ -16,55 +15,139 @@ html {
 body {
     position: fixed;
     inset: 0;
+}
+
+
+/* INTRO */
+
+#intro {
+    position: fixed;
+    inset: 0;
+
+    background: #000;
+
+    z-index: 20;
+
+    opacity: 1;
+
+    transition: opacity 1s ease;
+}
+
+
+#pixelCanvas {
+    position: absolute;
 
     width: 100%;
     height: 100%;
 
-    margin: 0;
-    padding: 0;
-
-    background: #000;
-    overflow: hidden;
+    inset: 0;
 }
 
-.landing {
-    position: absolute;
+
+/* CAMERA FLASH */
+
+#flash {
+    position: fixed;
+
+    inset: 0;
+
+    background: white;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 30;
+}
+
+
+#flash.fire {
+    animation: cameraFlash 0.65s ease-out forwards;
+}
+
+
+@keyframes cameraFlash {
+
+    0% {
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    20% {
+        opacity: 0.95;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+/* REMOVE INTRO */
+
+#intro.hide {
+    opacity: 0;
+}
+
+
+/* FINAL IMAGE */
+
+#landing {
+
+    position: fixed;
+
     inset: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    width: 100%;
-    height: 100%;
-
-    margin: 0;
-    padding: 0;
-
     background: #000;
-    overflow: hidden;
+
+    opacity: 0;
+
+    transition: opacity 1.5s ease;
+
 }
 
+
+#landing.show {
+    opacity: 1;
+}
+
+
 .logo {
+
     display: block;
 
     width: 50vw;
-    max-width: 800px;
-    height: auto;
-    max-height: 70vh;
 
-    margin: 0;
-    padding: 0;
+    max-width: 800px;
+
+    max-height: 72vh;
+
+    height: auto;
+
+    object-fit: contain;
 
     border: 0;
     outline: 0;
 
-    object-fit: contain;
 }
 
+
+/* MOBILE */
+
 @media (max-width: 700px) {
+
     .logo {
-        width: 80vw;
-        max-height: 70vh;
+        width: 85vw;
+        max-height: 80vh;
     }
+
 }
