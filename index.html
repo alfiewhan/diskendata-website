@@ -160,13 +160,15 @@
 
             enterScreen.classList.add("hide");
 
-            cameraSound.currentTime = 0;
-            cameraSound.volume = 1;
-            cameraSound.play();
-
             startTime = performance.now();
 
-            requestAnimationFrame(animate);
+requestAnimationFrame(animate);
+
+setTimeout(() => {
+    cameraSound.currentTime = 0;
+    cameraSound.volume = 1;
+    cameraSound.play();
+}, 1000);
 
             setTimeout(() => {
                 enterScreen.style.display = "none";
