@@ -8,8 +8,218 @@
 </head>
 
 <body>
-    <main class="landing">
+
+    <div id="intro">
+
+        <canvas id="pixelCanvas"></canvas>
+
+        <div id="flash"></div>
+
+    </div>
+
+    <main id="landing">
         <img src="logo.png" alt="DISKENDATA" class="logo">
     </main>
+
+    <script>
+        const canvas = document.getElementById("pixelCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const intro = document.getElementById("intro");
+        const flash = document.getElementById("flash");
+        const landing = document.getElementById("landing");
+
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resize();
+        window.addEventListener("resize", resize);
+
+
+        /* =========================
+           PIXEL CAMERA SHAPE
+        ========================= */
+
+        const cameraPattern = [
+            "        XXXXXXXX        ",
+            "        XXXXXXXX        ",
+            "      XXXXXXXXXXXX      ",
+            "   XXXXXXXXXXXXXXXXXX   ",
+            "  XXXXXXXXXXXXXXXXXXXX  ",
+            "  XXXXX        XXXXXXX  ",
+            "  XXXX    XXXX    XXXX  ",
+            "  XXXX  XXXXXXXX  XXXX  ",
+            "  XXXX  XXXXXXXX  XXXX  ",
+            "  XXXX  XXXXXXXX  XXXX  ",
+            "  XXXX    XXXX    XXXX  ",
+            "  XXXXX        XXXXXXX  ",
+            "  XXXXXXXXXXXXXXXXXXXX  ",
+            "   XXXXXXXXXXXXXXXXXX   "
+        ];
+
+
+        function createParticles() {
+
+            particles = [];
+
+            const pixelSize = Math.max(
+                7,
+                Math.min(13, window.innerWidth / 120)
+            );
+
+            const patternWidth =
+                cameraPattern[0].length * pixelSize;
+
+            const patternHeight =
+                cameraPattern.length * pixelSize;
+
+            const offsetX =
+                (canvas.width - patternWidth) / 2;
+
+            const offsetY =
+                (canvas.height - patternHeight) / 2;
+
+
+            cameraPattern.forEach((row, y) => {
+
+                [...row].forEach((cell, x) => {
+
+                    if (cell === "X") {
+
+                        particles.push({
+
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * canvas.height,
+
+                            targetX:
+                                offsetX + x * pixelSize,
+
+                            targetY:
+                                offsetY + y * pixelSize,
+
+                            size: pixelSize - 2,
+
+                            speed:
+                                0.025 +
+                                Math.random() * 0.035
+
+                        });
+
+                    }
+
+                });
+
+            });
+
+        }
+
+
+        createParticles();
+
+
+        /* =========================
+           ANIMATION
+        ========================= */
+
+        let startTime = performance.now();
+
+        function animate(time) {
+
+            const elapsed = time - startTime;
+
+            ctx.clearRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            particles.forEach(p => {
+
+                /*
+                First 700ms:
+                pixels float randomly.
+
+                After that:
+                assemble into camera.
+                */
+
+                if (elapsed > 700) {
+
+                    p.x +=
+                        (p.targetX - p.x) * p.speed;
+
+                    p.y +=
+                        (p.targetY - p.y) * p.speed;
+
+                }
+
+
+                const glow =
+                    Math.random() > 0.92;
+
+                ctx.fillStyle =
+                    glow
+                    ? "#ffffff"
+                    : "#65cfff";
+
+                ctx.fillRect(
+                    p.x,
+                    p.y,
+                    p.size,
+                    p.size
+                );
+
+            });
+
+
+            if (elapsed < 3000) {
+
+                requestAnimationFrame(animate);
+
+            } else {
+
+                triggerFlash();
+
+            }
+
+        }
+
+
+        requestAnimationFrame(animate);
+
+
+        /* =========================
+           CAMERA FLASH
+        ========================= */
+
+        function triggerFlash() {
+
+            flash.classList.add("fire");
+
+            setTimeout(() => {
+
+                intro.classList.add("hide");
+
+                landing.classList.add("show");
+
+            }, 450);
+
+
+            setTimeout(() => {
+
+                intro.style.display = "none";
+
+            }, 1500);
+
+        }
+
+    </script>
+
 </body>
 </html>
