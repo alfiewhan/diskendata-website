@@ -9,6 +9,10 @@
 
 <body>
 
+    <div id="enterScreen">
+        <button id="enterButton">ENTER DISKENDATA</button>
+    </div>
+
     <div id="intro">
         <canvas id="pixelCanvas"></canvas>
         <div id="flash"></div>
@@ -24,12 +28,17 @@
         const canvas = document.getElementById("pixelCanvas");
         const ctx = canvas.getContext("2d");
 
+        const enterScreen = document.getElementById("enterScreen");
+        const enterButton = document.getElementById("enterButton");
+
         const intro = document.getElementById("intro");
         const flash = document.getElementById("flash");
         const landing = document.getElementById("landing");
         const cameraSound = document.getElementById("cameraSound");
 
         let particles = [];
+        let startTime = 0;
+        let animationStarted = false;
 
         function resize() {
             canvas.width = window.innerWidth;
@@ -93,8 +102,6 @@
 
         createParticles();
 
-        let startTime = performance.now();
-
         function animate(time) {
             const elapsed = time - startTime;
 
@@ -146,12 +153,25 @@
             }, 1500);
         }
 
-        cameraSound.currentTime = 0;
-        cameraSound.play().catch(() => {
-            console.log("Audio autoplay blocked");
-        });
+        enterButton.addEventListener("click", () => {
+            if (animationStarted) return;
 
-        requestAnimationFrame(animate);
+            animationStarted = true;
+
+            enterScreen.classList.add("hide");
+
+            cameraSound.currentTime = 0;
+            cameraSound.volume = 1;
+            cameraSound.play();
+
+            startTime = performance.now();
+
+            requestAnimationFrame(animate);
+
+            setTimeout(() => {
+                enterScreen.style.display = "none";
+            }, 600);
+        });
     </script>
 
 </body>
