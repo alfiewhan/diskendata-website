@@ -26,8 +26,9 @@
         const ctx = canvas.getContext("2d");
 
         const intro = document.getElementById("intro");
-        const flash = document.getElementById("flash");
-        const landing = document.getElementById("landing");
+const flash = document.getElementById("flash");
+const landing = document.getElementById("landing");
+const cameraSound = document.getElementById("cameraSound");
 
         let particles = [];
 
@@ -178,7 +179,7 @@
             });
 
 
-            if (elapsed < 3000) {
+            if (elapsed < 4000) {
 
                 requestAnimationFrame(animate);
 
@@ -190,7 +191,10 @@
 
         }
 
-
+cameraSound.currentTime = 0;
+cameraSound.play().catch(() => {
+    console.log("Audio autoplay blocked");
+});
         requestAnimationFrame(animate);
 
 
