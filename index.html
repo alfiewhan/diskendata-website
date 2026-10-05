@@ -9,172 +9,962 @@
 
 <body>
 
+    <!-- ENTER SCREEN -->
     <div id="enterScreen">
         <button id="enterButton">ENTER DISKENDATA</button>
     </div>
 
+    <!-- CAMERA PARTICLE INTRO -->
     <div id="intro">
         <canvas id="pixelCanvas"></canvas>
         <div id="flash"></div>
     </div>
 
-    <main id="landing">
-        <img src="logo.png" alt="DISKENDATA" class="logo">
+    <!-- LOGO REVEAL -->
+    <section id="logoReveal">
+       <div class="logo-stage">
+    <img src="logo.png" alt="DISKENDATA" class="intro-logo">
+</div>
+
+        <div id="logoFlash"></div>
+    </section>
+
+    <!-- MAIN WEBSITE -->
+    <main id="website">
+
+        <!-- CRT / Y2K NAVIGATION -->
+        <header class="topbar">
+            <div class="topbar-crt"></div>
+
+            <div class="nav-brand">
+                DISKENDATA
+            </div>
+
+            <nav>
+                <a href="#about">ABOUT</a>
+                <a href="#gallery">GALLERY</a>
+                <a href="#contact">CONTACT INFORMATION</a>
+            </nav>
+
+            <div class="status">
+                ● ONLINE
+            </div>
+        </header>
+
+        <!-- GALLERY -->
+        <section id="gallery" class="gallery-section">
+
+            <div class="gallery-heading">
+                <span>AFTERSHOCK</span>
+                <span id="photoCounter">01 / 13</span>
+            </div>
+
+            <div class="gallery-viewer">
+
+                <button
+                    class="gallery-button gallery-prev"
+                    id="prevPhoto"
+                    aria-label="Previous photograph"
+                >
+                    ‹
+                </button>
+
+                <div class="photo-window">
+
+                    <div id="photoStage" class="photo-stage">
+                        <img
+                            id="galleryImage"
+                            src="images/AF1.jpg"
+                            alt="DISKENDATA event photography"
+                        >
+                    </div>
+
+                </div>
+
+                <button
+                    class="gallery-button gallery-next"
+                    id="nextPhoto"
+                    aria-label="Next photograph"
+                >
+                    ›
+                </button>
+
+            </div>
+
+            <div class="gallery-footer">
+                <span>DISKENDATA // EVENT PHOTOGRAPHY</span>
+                <span>USE ◀ ▶ TO BROWSE</span>
+            </div>
+
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="content-section">
+            <div class="section-number">01</div>
+
+            <div class="section-content">
+    <h2>ABOUT</h2>
+
+    <p class="about-intro">
+        DISKENDATA - Nightlife and private event photography.
+    </p>
+
+    <p>
+        At DISKENDATA, we believe capturing the candid moments of a night
+        is important. We focus on showcasing energetic crowds, spontaneous
+        moments and the atmosphere that makes each event unique, making
+        sure every photograph feels busy with life and energy, and reflects
+        exactly what your event creates, from small intimate clubs to
+        large-scale club spaces.
+    </p>
+
+    <p>
+        With years of experience in photography and a passion that runs
+        in the bloodline, I aim to bring every brand and event a collection
+        of photographs that captures the real moments of fun, energy and
+        friendship that happen on the dance floor.
+    </p>
+
+    <p class="about-tagline">
+        You create the energy, we capture it.
+    </p>
+
+    <p class="about-signoff">
+        Thank you for visiting this website.<br><br>
+        Alfie Nichols<br>
+        <span>(DISKENDATA)</span>
+    </p>
+</div>
+        </section>
+
+        <!-- CONTACT -->
+<section id="contact" class="content-section">
+
+    <div class="section-number">02</div>
+
+    <div class="section-content">
+
+        <h2>CONTACT INFORMATION</h2>
+
+        <p>
+            BOOKINGS / EVENTS / PRESS
+        </p>
+
+        <p>
+            For event photography, private bookings and enquiries,
+            please get in touch.
+        </p>
+
+        <a href="tel:+447407255461">
+            07407 255461
+        </a>
+
+    </div>
+
+</section>
+
+        <footer>
+            <span>DISKENDATA</span>
+            <span>EST. 2026</span>
+        </footer>
+
     </main>
 
-    <audio id="cameraSound" src="camera.mp3" preload="auto"></audio>
+    <audio
+        id="cameraSound"
+        src="camera.mp3"
+        preload="auto"
+    ></audio>
 
-    <script>
-        const canvas = document.getElementById("pixelCanvas");
-        const ctx = canvas.getContext("2d");
 
-        const enterScreen = document.getElementById("enterScreen");
-        const enterButton = document.getElementById("enterButton");
+<script>
 
-        const intro = document.getElementById("intro");
-        const flash = document.getElementById("flash");
-        const landing = document.getElementById("landing");
-        const cameraSound = document.getElementById("cameraSound");
+/* =========================================================
+   DISKENDATA
+   CAMERA INTRO → LOGO → WEBSITE
+========================================================= */
 
-        let particles = [];
-        let startTime = 0;
-        let animationStarted = false;
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
-        resize();
-        window.addEventListener("resize", resize);
+const canvas = document.getElementById("pixelCanvas");
+const ctx = canvas.getContext("2d");
 
-        const cameraPattern = [
-            "        XXXXXXXX        ",
-            "        XXXXXXXX        ",
-            "      XXXXXXXXXXXX      ",
-            "   XXXXXXXXXXXXXXXXXX   ",
-            "  XXXXXXXXXXXXXXXXXXXX  ",
-            "  XXXXX        XXXXXXX  ",
-            "  XXXX    XXXX    XXXX  ",
-            "  XXXX  XXXXXXXX  XXXX  ",
-            "  XXXX  XXXXXXXX  XXXX  ",
-            "  XXXX  XXXXXXXX  XXXX  ",
-            "  XXXX    XXXX    XXXX  ",
-            "  XXXXX        XXXXXXX  ",
-            "  XXXXXXXXXXXXXXXXXXXX  ",
-            "   XXXXXXXXXXXXXXXXXX   "
-        ];
+const enterScreen = document.getElementById("enterScreen");
+const enterButton = document.getElementById("enterButton");
 
-        function createParticles() {
-            particles = [];
+const intro = document.getElementById("intro");
+const flash = document.getElementById("flash");
 
-            const pixelSize = Math.max(
-                7,
-                Math.min(13, window.innerWidth / 120)
-            );
+const logoReveal = document.getElementById("logoReveal");
+const logoFlash = document.getElementById("logoFlash");
 
-            const patternWidth = cameraPattern[0].length * pixelSize;
-            const patternHeight = cameraPattern.length * pixelSize;
+const website = document.getElementById("website");
 
-            const offsetX = (canvas.width - patternWidth) / 2;
-            const offsetY = (canvas.height - patternHeight) / 2;
+const cameraSound = document.getElementById("cameraSound");
 
-            cameraPattern.forEach((row, y) => {
-                [...row].forEach((cell, x) => {
-                    if (cell === "X") {
-                        particles.push({
-                            x: Math.random() * canvas.width,
-                            y: Math.random() * canvas.height,
 
-                            targetX: offsetX + x * pixelSize,
-                            targetY: offsetY + y * pixelSize,
+/* =========================================================
+   CAMERA PARTICLES
+========================================================= */
 
-                            size: pixelSize - 2,
+let particles = [];
+let startTime = 0;
+let animationStarted = false;
+let flashTriggered = false;
 
-                            speed:
-                                0.025 +
-                                Math.random() * 0.035
-                        });
-                    }
-                });
-            });
-        }
 
+function resizeCanvas() {
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+}
+
+
+resizeCanvas();
+
+
+window.addEventListener("resize", () => {
+
+    resizeCanvas();
+
+    /*
+       Only recreate particles before the intro
+       animation has begun.
+    */
+
+    if (!animationStarted) {
         createParticles();
+    }
 
-        function animate(time) {
-            const elapsed = time - startTime;
+});
 
-            ctx.clearRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
+
+/* =========================================================
+   PIXEL CAMERA DESIGN
+========================================================= */
+
+const cameraPattern = [
+
+    "        XXXXXXXX        ",
+    "        XXXXXXXX        ",
+    "      XXXXXXXXXXXX      ",
+    "   XXXXXXXXXXXXXXXXXX   ",
+    "  XXXXXXXXXXXXXXXXXXXX  ",
+    "  XXXXX        XXXXXXX  ",
+    "  XXXX    XXXX    XXXX  ",
+    "  XXXX  XXXXXXXX  XXXX  ",
+    "  XXXX  XXXXXXXX  XXXX  ",
+    "  XXXX  XXXXXXXX  XXXX  ",
+    "  XXXX    XXXX    XXXX  ",
+    "  XXXXX        XXXXXXX  ",
+    "  XXXXXXXXXXXXXXXXXXXX  ",
+    "   XXXXXXXXXXXXXXXXXX   "
+
+];
+
+
+/* =========================================================
+   CREATE PARTICLES
+========================================================= */
+
+function createParticles() {
+
+    particles = [];
+
+
+    const pixelSize = Math.max(
+        7,
+        Math.min(
+            13,
+            window.innerWidth / 120
+        )
+    );
+
+
+    const patternWidth =
+        cameraPattern[0].length * pixelSize;
+
+
+    const patternHeight =
+        cameraPattern.length * pixelSize;
+
+
+    const offsetX =
+        (canvas.width - patternWidth) / 2;
+
+
+    const offsetY =
+        (canvas.height - patternHeight) / 2;
+
+
+    cameraPattern.forEach((row, y) => {
+
+        [...row].forEach((cell, x) => {
+
+            if (cell === "X") {
+
+                particles.push({
+
+                    /*
+                       Random starting position
+                    */
+
+                    x:
+                        Math.random() *
+                        canvas.width,
+
+                    y:
+                        Math.random() *
+                        canvas.height,
+
+
+                    /*
+                       Final camera position
+                    */
+
+                    targetX:
+                        offsetX +
+                        x * pixelSize,
+
+                    targetY:
+                        offsetY +
+                        y * pixelSize,
+
+
+                    size:
+                        pixelSize - 2,
+
+
+                    speed:
+                        0.025 +
+                        Math.random() * 0.035
+
+                });
+
+            }
+
+        });
+
+    });
+
+}
+
+
+createParticles();
+
+
+/* =========================================================
+   CAMERA ANIMATION
+========================================================= */
+
+function animateCamera(time) {
+
+    const elapsed =
+        time - startTime;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    particles.forEach(particle => {
+
+
+        /*
+           Wait briefly before particles
+           begin forming the camera.
+        */
+
+        if (elapsed > 700) {
+
+            particle.x +=
+                (particle.targetX - particle.x)
+                * particle.speed;
+
+
+            particle.y +=
+                (particle.targetY - particle.y)
+                * particle.speed;
+
+        }
+
+
+        /*
+           Random white pixel flicker
+        */
+
+        const glow =
+            Math.random() > 0.92;
+
+
+        ctx.fillStyle =
+            glow
+                ? "#ffffff"
+                : "#65cfff";
+
+
+        ctx.fillRect(
+            particle.x,
+            particle.y,
+            particle.size,
+            particle.size
+        );
+
+    });
+
+
+    /*
+       Keep camera on screen for 4 seconds.
+    */
+
+    if (elapsed < 4000) {
+
+        requestAnimationFrame(
+            animateCamera
+        );
+
+    }
+
+    else if (!flashTriggered) {
+
+        flashTriggered = true;
+
+        triggerCameraFlash();
+
+    }
+
+}
+
+
+/* =========================================================
+   CAMERA FLASH
+========================================================= */
+
+function triggerCameraFlash() {
+
+    /* Initial camera flash */
+    flash.classList.add("fire");
+
+
+    /* Fade camera intro away and reveal logo */
+    setTimeout(() => {
+
+        intro.classList.add("hide");
+        logoReveal.classList.add("show");
+
+    }, 450);
+
+
+    /* Remove camera animation */
+    setTimeout(() => {
+
+        intro.style.display = "none";
+
+    }, 1500);
+
+
+    /*
+       Hold the clean logo on black,
+       then gently fade it away.
+    */
+    setTimeout(() => {
+
+        logoReveal.classList.add("hide");
+
+    }, 2800);
+
+
+    /*
+       Fade the website in underneath.
+       Slight overlap makes the transition smooth.
+    */
+    setTimeout(() => {
+
+        website.classList.add("show");
+
+    }, 3200);
+
+
+    /* Remove logo layer once transition is finished */
+    setTimeout(() => {
+
+        logoReveal.style.display = "none";
+
+    }, 4400);
+
+}
+
+
+/* =========================================================
+   ENTER DISKENDATA
+========================================================= */
+
+enterButton.addEventListener(
+    "click",
+    () => {
+
+
+        /*
+           Prevent double-clicking.
+        */
+
+        if (animationStarted) return;
+
+
+        animationStarted = true;
+
+
+        /*
+           Fade ENTER screen.
+        */
+
+        enterScreen.classList.add("hide");
+
+
+        /*
+           Start camera animation.
+        */
+
+        startTime =
+            performance.now();
+
+
+        requestAnimationFrame(
+            animateCamera
+        );
+
+
+        /*
+           ORIGINAL CAMERA SOUND TIMING
+
+           This is back to the timing from
+           your original website:
+           1 second after pressing ENTER.
+        */
+
+        setTimeout(() => {
+
+            cameraSound.currentTime = 0;
+
+            cameraSound.volume = 1;
+
+            cameraSound
+                .play()
+                .catch(() => {});
+
+        }, 1000);
+
+
+        /*
+           Remove ENTER screen.
+        */
+
+        setTimeout(() => {
+
+            enterScreen.style.display =
+                "none";
+
+        }, 600);
+
+    }
+);
+
+
+/* =========================================================
+   GALLERY
+========================================================= */
+
+const photos = [
+
+    "images/AF1.jpg",
+    "images/AF2.jpg",
+    "images/AF3.jpg",
+    "images/AF4.jpg",
+    "images/AF5.jpg",
+    "images/AF6.jpg",
+    "images/AF7.jpg",
+    "images/AF8.jpg",
+    "images/AF9.jpg",
+    "images/AF10.jpg",
+    "images/AF11.jpg",
+    "images/AF12.jpg",
+    "images/AF13.jpg"
+
+];
+
+
+let currentPhoto = 0;
+
+let changingPhoto = false;
+
+
+const galleryImage =
+    document.getElementById(
+        "galleryImage"
+    );
+
+
+const photoStage =
+    document.getElementById(
+        "photoStage"
+    );
+
+
+const counter =
+    document.getElementById(
+        "photoCounter"
+    );
+
+
+const nextButton =
+    document.getElementById(
+        "nextPhoto"
+    );
+
+
+const prevButton =
+    document.getElementById(
+        "prevPhoto"
+    );
+
+
+/* =========================================================
+   PHOTO COUNTER
+========================================================= */
+
+function updateCounter() {
+
+    const current =
+        String(
+            currentPhoto + 1
+        ).padStart(2, "0");
+
+
+    const total =
+        String(
+            photos.length
+        ).padStart(2, "0");
+
+
+    counter.textContent =
+        current + " / " + total;
+
+}
+
+
+/* =========================================================
+   CHANGE PHOTO
+========================================================= */
+
+function changePhoto(direction) {
+
+
+    /*
+       Don't allow another page turn
+       while one is already happening.
+    */
+
+    if (changingPhoto) return;
+
+
+    changingPhoto = true;
+
+
+    /*
+       Animate current photograph away.
+    */
+
+    if (direction === "next") {
+
+        photoStage.classList.add(
+            "page-out-left"
+        );
+
+    }
+
+    else {
+
+        photoStage.classList.add(
+            "page-out-right"
+        );
+
+    }
+
+
+    /*
+       Change photograph once old one
+       has swept away.
+    */
+
+    setTimeout(() => {
+
+
+        if (direction === "next") {
+
+            currentPhoto =
+                (currentPhoto + 1)
+                % photos.length;
+
+        }
+
+        else {
+
+            currentPhoto =
+                (
+                    currentPhoto
+                    - 1
+                    + photos.length
+                )
+                % photos.length;
+
+        }
+
+
+        /*
+           Load new photograph.
+        */
+
+        galleryImage.src =
+            photos[currentPhoto];
+
+
+        updateCounter();
+
+
+        /*
+           Reset old animation classes.
+        */
+
+        photoStage.className =
+            "photo-stage";
+
+
+        /*
+           Position incoming photograph.
+        */
+
+        if (direction === "next") {
+
+            photoStage.classList.add(
+                "page-in-right"
             );
 
-            particles.forEach(p => {
-                if (elapsed > 700) {
-                    p.x += (p.targetX - p.x) * p.speed;
-                    p.y += (p.targetY - p.y) * p.speed;
-                }
-
-                const glow = Math.random() > 0.92;
-
-                ctx.fillStyle =
-                    glow
-                    ? "#ffffff"
-                    : "#65cfff";
-
-                ctx.fillRect(
-                    p.x,
-                    p.y,
-                    p.size,
-                    p.size
-                );
-            });
-
-            if (elapsed < 4000) {
-                requestAnimationFrame(animate);
-            } else {
-                triggerFlash();
-            }
         }
 
-        function triggerFlash() {
-            flash.classList.add("fire");
+        else {
 
-            setTimeout(() => {
-                intro.classList.add("hide");
-                landing.classList.add("show");
-            }, 450);
+            photoStage.classList.add(
+                "page-in-left"
+            );
 
-            setTimeout(() => {
-                intro.style.display = "none";
-            }, 1500);
         }
 
-        enterButton.addEventListener("click", () => {
-            if (animationStarted) return;
 
-            animationStarted = true;
+        /*
+           Force browser to register
+           starting position.
+        */
 
-            enterScreen.classList.add("hide");
+        void photoStage.offsetWidth;
 
-            startTime = performance.now();
 
-requestAnimationFrame(animate);
+        /*
+           Animate photograph into place.
+        */
 
-setTimeout(() => {
-    cameraSound.currentTime = 0;
-    cameraSound.volume = 1;
-    cameraSound.play();
-}, 1000);
+        photoStage.classList.add(
+            "page-visible"
+        );
 
-            setTimeout(() => {
-                enterScreen.style.display = "none";
-            }, 600);
-        });
-    </script>
+
+        /*
+           Clean animation classes.
+        */
+
+        setTimeout(() => {
+
+            photoStage.className =
+                "photo-stage";
+
+            changingPhoto = false;
+
+        }, 650);
+
+
+    }, 500);
+
+}
+
+
+/* =========================================================
+   GALLERY BUTTONS
+========================================================= */
+
+nextButton.addEventListener(
+    "click",
+    () => {
+
+        changePhoto("next");
+
+    }
+);
+
+
+prevButton.addEventListener(
+    "click",
+    () => {
+
+        changePhoto("prev");
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD ARROWS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+
+        /*
+           Don't browse gallery while
+           intro is still playing.
+        */
+
+        if (
+            !website.classList.contains(
+                "show"
+            )
+        ) {
+            return;
+        }
+
+
+        if (
+            event.key ===
+            "ArrowRight"
+        ) {
+
+            changePhoto("next");
+
+        }
+
+
+        if (
+            event.key ===
+            "ArrowLeft"
+        ) {
+
+            changePhoto("prev");
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   MOBILE SWIPE
+========================================================= */
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+
+photoStage.addEventListener(
+    "touchstart",
+    event => {
+
+        touchStartX =
+            event
+                .changedTouches[0]
+                .screenX;
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+photoStage.addEventListener(
+    "touchend",
+    event => {
+
+        touchEndX =
+            event
+                .changedTouches[0]
+                .screenX;
+
+
+        const difference =
+            touchStartX -
+            touchEndX;
+
+
+        /*
+           Ignore tiny accidental swipes.
+        */
+
+        if (
+            Math.abs(difference)
+            < 50
+        ) {
+            return;
+        }
+
+
+        if (difference > 0) {
+
+            changePhoto("next");
+
+        }
+
+        else {
+
+            changePhoto("prev");
+
+        }
+
+    },
+    {
+        passive: true
+    }
+);
+
+
+/* =========================================================
+   PRELOAD PHOTOGRAPHS
+========================================================= */
+
+photos.forEach(photo => {
+
+    const image =
+        new Image();
+
+    image.src = photo;
+
+});
+
+
+/* =========================================================
+   INITIALISE
+========================================================= */
+
+updateCounter();
+
+</script>
 
 </body>
 </html>
