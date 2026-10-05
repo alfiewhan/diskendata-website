@@ -1226,3 +1226,122 @@ footer {
         scroll-behavior: auto !important;
     }
 }
+
+/* =========================================================
+   BEHIND THE CAMERA
+========================================================= */
+
+/* =========================================================
+   BEHIND THE CAMERA
+========================================================= */
+
+/* =========================================================
+   BEHIND THE CAMERA
+========================================================= */
+
+.behind-camera {
+    margin-top: 80px;
+    padding-top: 45px;
+    border-top: 1px solid #444;
+
+    display: flex;
+    align-items: center;
+    gap: 38px;
+}
+
+.behind-camera-image {
+    width: 220px;
+    min-width: 220px;
+
+    overflow: hidden;
+    background: #111;
+    border: 1px solid #555;
+}
+
+.behind-camera-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+
+    filter: grayscale(100%);
+}
+
+.behind-camera-content {
+    min-width: 0;
+}
+
+.behind-camera-label {
+    display: block;
+    margin-bottom: 10px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+
+    color: #777;
+}
+
+.behind-camera-content h3 {
+    margin: 0 0 18px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(24px, 2.5vw, 34px);
+    font-weight: 700;
+    letter-spacing: 2px;
+
+    color: #fff;
+}
+
+.behind-camera-content p {
+    margin: 0 0 8px;
+    max-width: 450px;
+
+    font-size: 15px;
+    line-height: 1.6;
+
+    color: #aaa;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .behind-camera {
+        margin-top: 60px;
+        padding-top: 35px;
+
+        align-items: flex-start;
+        gap: 22px;
+    }
+
+    .behind-camera-image {
+        width: 160px;
+        min-width: 160px;
+    }
+
+    .behind-camera-content h3 {
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
+
+    .behind-camera-content p {
+        font-size: 14px;
+    }
+}
+
+/* =========================================================
+   LEFT NAVIGATION LOGO
+========================================================= */
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    display: block;
+    width: 145px;
+    height: auto;
+    object-fit: contain;
+}
